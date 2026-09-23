@@ -1,0 +1,703 @@
+@import "tailwindcss";
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  }
+}
+
+/* Custom Leaflet Controls & Popups */
+.leaflet-container {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif !important;
+  width: 100%;
+  height: 100%;
+  background-color: #f1f5f9;
+  outline: none;
+}
+
+.leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+.dark .leaflet-container {
+  background-color: #0b0f19;
+}
+
+/* Custom Marker Cluster Styling */
+.mponline-cluster-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(234, 88, 12, 0.25);
+  background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.mponline-cluster-icon:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35), 0 0 0 6px rgba(234, 88, 12, 0.4);
+}
+
+.mponline-cluster-icon.cluster-lg {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25), 0 0 0 4px rgba(2, 132, 199, 0.3);
+}
+
+/* User Location Prominent Pin & Radar Pulse */
+.user-pin-wrapper {
+  cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.user-pin-wrapper:hover {
+  transform: translateY(-4px) scale(1.08);
+}
+
+.user-location-pin-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 160px;
+}
+
+.user-location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(29, 78, 216, 0.5);
+  white-space: nowrap;
+  margin-bottom: 2px;
+  border: 2px solid #ffffff;
+}
+
+.user-badge-subtext {
+  opacity: 0.85;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.user-badge-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background-color: #60a5fa;
+  box-shadow: 0 0 8px #93c5fd;
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.user-pin-beacon-wrapper {
+  position: relative;
+  width: 36px;
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.user-pin-head {
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border: 3px solid #ffffff;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 4px 14px rgba(29, 78, 216, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.user-pin-inner-dot {
+  width: 9px;
+  height: 9px;
+  background-color: #ffffff;
+  border-radius: 9999px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.user-pin-ground-pulse {
+  position: absolute;
+  bottom: 0px;
+  width: 36px;
+  height: 14px;
+  background: rgba(37, 99, 235, 0.45);
+  border-radius: 50%;
+  animation: ground-pulse 2s infinite ease-out;
+  pointer-events: none;
+  z-index: 5;
+}
+
+@keyframes ground-pulse {
+  0% {
+    transform: scale(0.5);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* MPOnline Kiosk Center Pin & Storefront Booth Styling */
+.custom-kiosk-marker {
+  cursor: pointer;
+  pointer-events: auto;
+  user-select: none;
+}
+
+.kiosk-center-pin {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 180px;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.kiosk-center-pin:hover {
+  transform: translateY(-5px) scale(1.08);
+  z-index: 9999 !important;
+}
+
+.kiosk-center-pin.is-selected {
+  transform: translateY(-7px) scale(1.15);
+  z-index: 10000 !important;
+}
+
+/* Floating Kiosk Label Card */
+.kiosk-label-card {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #ffffff;
+  color: #0f172a;
+  padding: 3px 9px 3px 5px;
+  border-radius: 9999px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.08);
+  border: 1.5px solid #f97316;
+  white-space: nowrap;
+  font-size: 11px;
+  font-weight: 700;
+  margin-bottom: 3px;
+  max-width: 180px;
+  transition: all 0.2s ease;
+}
+
+.dark .kiosk-label-card {
+  background: #0f172a;
+  color: #f8fafc;
+  border-color: #ea580c;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.kiosk-center-pin.is-selected .kiosk-label-card {
+  background: linear-gradient(135deg, #ea580c 0%, #c2410c 100%);
+  color: #ffffff;
+  border-color: #ffffff;
+  box-shadow: 0 6px 20px rgba(234, 88, 12, 0.5);
+}
+
+/* Small MP Chip */
+.kiosk-mp-badge {
+  background: #ea580c;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 900;
+  padding: 1px 5px;
+  border-radius: 9999px;
+  letter-spacing: 0.5px;
+}
+
+.kiosk-center-pin.is-selected .kiosk-mp-badge {
+  background: #ffffff;
+  color: #ea580c;
+}
+
+/* Kiosk Center Booth Pin Head */
+.kiosk-booth-pin {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #fb923c 0%, #ea580c 60%, #c2410c 100%);
+  border: 2.5px solid #ffffff;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  box-shadow: 0 4px 14px rgba(234, 88, 12, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 10;
+  transition: box-shadow 0.2s ease;
+}
+
+.kiosk-center-pin.is-selected .kiosk-booth-pin {
+  box-shadow: 0 0 0 4px rgba(234, 88, 12, 0.4), 0 6px 18px rgba(194, 65, 12, 0.6);
+  background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
+}
+
+/* Icon inside rotated pin */
+.kiosk-booth-icon-inner {
+  transform: rotate(45deg);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Status Indicator Dot */
+.kiosk-live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.kiosk-live-dot.open {
+  background-color: #22c55e;
+  box-shadow: 0 0 6px #22c55e;
+}
+
+.kiosk-live-dot.closed {
+  background-color: #94a3b8;
+}
+
+/* Ground Shadow */
+.kiosk-ground-shadow {
+  width: 18px;
+  height: 5px;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 50%;
+  margin-top: 1px;
+  filter: blur(1px);
+}
+
+/* Legacy support aliases */
+.kiosk-pin-wrapper {
+  position: relative;
+}
+.kiosk-pin-badge {
+  display: flex;
+}
+.kiosk-pin-anchor {
+  display: none;
+}
+
+/* Animated Route Dash Modes */
+.route-mode-driving {
+  stroke-dasharray: 14, 10;
+  animation: highway-car-flow 1.0s linear infinite;
+}
+
+@keyframes highway-car-flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.route-mode-motorcycle {
+  stroke-dasharray: 9, 7;
+  animation: motorcycle-rapid-streak 0.65s linear infinite;
+}
+
+@keyframes motorcycle-rapid-streak {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+
+.route-mode-walking {
+  stroke-dasharray: 2, 12;
+  stroke-linecap: round !important;
+  animation: pedestrian-walk-step 1.8s linear infinite;
+}
+
+@keyframes pedestrian-walk-step {
+  to {
+    stroke-dashoffset: -14;
+  }
+}
+
+/* --- Dynamic Moving Traveler Avatars Along Route --- */
+.traveler-marker-wrapper.leaflet-div-icon,
+.traveler-marker-wrapper {
+  background: transparent !important;
+  border: none !important;
+  pointer-events: none;
+  z-index: 4000 !important;
+}
+
+.traveler-avatar-container {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Driving (Car) Avatar */
+.traveler-avatar-driving {
+  width: 38px;
+  height: 38px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+  color: #ffffff;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.65), 0 0 0 4px rgba(56, 189, 248, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: car-bounce 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes car-bounce {
+  0% { transform: translateY(0px) scale(1); }
+  100% { transform: translateY(-2px) scale(1.04); }
+}
+
+.traveler-headlight-beam {
+  position: absolute;
+  top: -8px;
+  width: 22px;
+  height: 12px;
+  background: radial-gradient(ellipse at bottom, rgba(254, 240, 138, 0.9) 0%, rgba(254, 240, 138, 0) 80%);
+  border-radius: 50% 50% 0 0;
+  pointer-events: none;
+  filter: blur(1px);
+}
+
+/* Motorcycle / Two-Wheeler Avatar */
+.traveler-avatar-motorcycle {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: #ffffff;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.65), 0 0 0 4px rgba(52, 211, 153, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: moto-lean 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes moto-lean {
+  0% { transform: rotate(-8deg) scale(0.96); }
+  100% { transform: rotate(8deg) scale(1.06); }
+}
+
+.traveler-speed-lines {
+  position: absolute;
+  bottom: -4px;
+  width: 24px;
+  height: 4px;
+  background: rgba(52, 211, 153, 0.85);
+  border-radius: 9999px;
+  filter: blur(1px);
+  animation: ping 0.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Walking Avatar */
+.traveler-avatar-walking {
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #0284c7 0%, #0ea5e9 100%);
+  color: #ffffff;
+  border: 2.5px solid #ffffff;
+  box-shadow: 0 4px 14px rgba(14, 165, 233, 0.65), 0 0 0 4px rgba(125, 211, 252, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  animation: walking-bob 1.1s ease-in-out infinite alternate;
+}
+
+@keyframes walking-bob {
+  0% { transform: translateY(0px) rotate(-5deg); }
+  100% { transform: translateY(-3px) rotate(5deg); }
+}
+
+.traveler-footprint-wave {
+  position: absolute;
+  inset: -6px;
+  border-radius: 9999px;
+  border: 2px solid rgba(14, 165, 233, 0.55);
+  animation: footprint-expand 1.6s ease-out infinite;
+}
+
+@keyframes footprint-expand {
+  0% { transform: scale(0.7); opacity: 0.9; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* Legacy support alias */
+.animated-route-path {
+  stroke-dasharray: 12, 10;
+  animation: highway-car-flow 1.0s linear infinite;
+}
+
+/* Custom Scrollbars */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.6);
+}
+
+/* Hide scrollbars cleanly for mobile chips and swipeable containers */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+  height: 0px;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Seamless Dark Mode Tile Filter (100% Free & Watermark-Free) */
+.dark-map-tiles .leaflet-tile-pane {
+  filter: brightness(0.7) invert(1) contrast(1.35) hue-rotate(190deg) saturate(0.35);
+}
+
+/* ==========================================================
+   DYNAMIC UI THEME SYSTEM: FROSTED AERO / SOLID / EMERALD / SUNSET / CYBER
+   ========================================================== */
+
+/* 1. Frosted UI / Aero (🟢 Recommended: Soft Backdrop Blur, crystalline native chrome) */
+[data-ui-theme="aero"] .theme-panel,
+[data-ui-theme="aero"] .theme-panel-surface {
+  background-color: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border-color: rgba(203, 213, 225, 0.9) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255, 255, 255, 0.9) !important;
+  color: #0f172a !important;
+}
+
+.dark[data-ui-theme="aero"] .theme-panel,
+.dark[data-ui-theme="aero"] .theme-panel-surface {
+  background-color: rgba(15, 23, 42, 0.84) !important;
+  backdrop-filter: blur(28px) saturate(190%) !important;
+  -webkit-backdrop-filter: blur(28px) saturate(190%) !important;
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.14) !important;
+  color: #f8fafc !important;
+}
+
+[data-ui-theme="aero"] .theme-card {
+  background-color: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border-color: rgba(203, 213, 225, 0.9) !important;
+}
+
+.dark[data-ui-theme="aero"] .theme-card {
+  background-color: rgba(30, 41, 59, 0.75) !important;
+  backdrop-filter: blur(18px) !important;
+  -webkit-backdrop-filter: blur(18px) !important;
+  border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+/* 2. Classic Solid (Enterprise High-Contrast, Zero Transparency) */
+[data-ui-theme="classic"] .theme-panel,
+[data-ui-theme="classic"] .theme-panel-surface {
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-color: #94a3b8 !important;
+  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.14) !important;
+  color: #0f172a !important;
+}
+
+.dark[data-ui-theme="classic"] .theme-panel,
+.dark[data-ui-theme="classic"] .theme-panel-surface {
+  background-color: #0b1120 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border-color: #334155 !important;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.7) !important;
+  color: #f8fafc !important;
+}
+
+[data-ui-theme="classic"] .theme-card {
+  background-color: #f8fafc !important;
+  backdrop-filter: none !important;
+  border-color: #cbd5e1 !important;
+}
+
+.dark[data-ui-theme="classic"] .theme-card {
+  background-color: #1e293b !important;
+  backdrop-filter: none !important;
+  border-color: #334155 !important;
+}
+
+/* 3. Deep Emerald / MP Shasan (Official Govt of MP styling with High Contrast) */
+[data-ui-theme="emerald"] .theme-panel,
+[data-ui-theme="emerald"] .theme-panel-surface {
+  background-color: rgba(236, 253, 245, 0.94) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-color: rgba(16, 185, 129, 0.45) !important;
+  box-shadow: 0 16px 45px rgba(5, 150, 105, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  color: #022c22 !important;
+}
+
+.dark[data-ui-theme="emerald"] .theme-panel,
+.dark[data-ui-theme="emerald"] .theme-panel-surface {
+  background-color: rgba(4, 30, 20, 0.92) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border-color: rgba(52, 211, 153, 0.35) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 25px rgba(16, 185, 129, 0.25) !important;
+  color: #ecfdf5 !important;
+}
+
+[data-ui-theme="emerald"] .theme-card {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+.dark[data-ui-theme="emerald"] .theme-card {
+  background-color: rgba(6, 48, 34, 0.7) !important;
+  border-color: rgba(52, 211, 153, 0.25) !important;
+}
+
+/* High contrast text overrides for Emerald */
+[data-ui-theme="emerald"] .theme-panel h1,
+[data-ui-theme="emerald"] .theme-panel h2,
+[data-ui-theme="emerald"] .theme-panel h3,
+[data-ui-theme="emerald"] .theme-panel strong {
+  color: #022c22 !important;
+}
+.dark[data-ui-theme="emerald"] .theme-panel h1,
+.dark[data-ui-theme="emerald"] .theme-panel h2,
+.dark[data-ui-theme="emerald"] .theme-panel h3,
+.dark[data-ui-theme="emerald"] .theme-panel strong {
+  color: #ffffff !important;
+}
+
+/* 4. Warm Sunset / Amber Solar (Warm Ambient & High Contrast Eye Care) */
+[data-ui-theme="sunset"] .theme-panel,
+[data-ui-theme="sunset"] .theme-panel-surface {
+  background-color: rgba(255, 251, 235, 0.94) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border-color: rgba(245, 158, 11, 0.45) !important;
+  box-shadow: 0 16px 45px rgba(217, 119, 6, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.9) !important;
+  color: #451a03 !important;
+}
+
+.dark[data-ui-theme="sunset"] .theme-panel,
+.dark[data-ui-theme="sunset"] .theme-panel-surface {
+  background-color: rgba(30, 20, 14, 0.94) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border-color: rgba(245, 158, 11, 0.35) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 20px rgba(245, 158, 11, 0.18) !important;
+  color: #fef3c7 !important;
+}
+
+[data-ui-theme="sunset"] .theme-card {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+.dark[data-ui-theme="sunset"] .theme-card {
+  background-color: rgba(58, 34, 18, 0.65) !important;
+  border-color: rgba(245, 158, 11, 0.25) !important;
+}
+
+/* High contrast text overrides for Sunset */
+[data-ui-theme="sunset"] .theme-panel h1,
+[data-ui-theme="sunset"] .theme-panel h2,
+[data-ui-theme="sunset"] .theme-panel h3,
+[data-ui-theme="sunset"] .theme-panel strong {
+  color: #451a03 !important;
+}
+.dark[data-ui-theme="sunset"] .theme-panel h1,
+.dark[data-ui-theme="sunset"] .theme-panel h2,
+.dark[data-ui-theme="sunset"] .theme-panel h3,
+.dark[data-ui-theme="sunset"] .theme-panel strong {
+  color: #ffffff !important;
+}
+
+/* 5. Cyber Midnight / High-Tech Neon with OLED Black Contrast */
+[data-ui-theme="cyber"] .theme-panel,
+[data-ui-theme="cyber"] .theme-panel-surface {
+  background-color: rgba(4, 8, 18, 0.95) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border-color: rgba(6, 182, 212, 0.55) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), 0 0 20px rgba(6, 182, 212, 0.25) !important;
+  color: #f1f5f9 !important;
+}
+
+.dark[data-ui-theme="cyber"] .theme-panel,
+.dark[data-ui-theme="cyber"] .theme-panel-surface {
+  background-color: rgba(2, 6, 14, 0.96) !important;
+  backdrop-filter: blur(28px) !important;
+  -webkit-backdrop-filter: blur(28px) !important;
+  border-color: rgba(6, 182, 212, 0.65) !important;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.95), 0 0 30px rgba(6, 182, 212, 0.35) !important;
+  color: #f8fafc !important;
+}
+
+[data-ui-theme="cyber"] .theme-card {
+  background-color: rgba(15, 23, 42, 0.85) !important;
+  border-color: rgba(6, 182, 212, 0.4) !important;
+}
+
+/* High contrast text overrides for Cyber */
+[data-ui-theme="cyber"] .theme-panel h1,
+[data-ui-theme="cyber"] .theme-panel h2,
+[data-ui-theme="cyber"] .theme-panel h3,
+[data-ui-theme="cyber"] .theme-panel strong {
+  color: #ffffff !important;
+}
+[data-ui-theme="cyber"] .theme-panel p {
+  color: #e2e8f0 !important;
+}
+[data-ui-theme="cyber"] .theme-panel span {
+  color: inherit;
+}
+

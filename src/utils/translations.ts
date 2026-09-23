@@ -1,0 +1,338 @@
+import { Language } from '../types';
+
+export interface ServiceDocGuide {
+  id: string;
+  nameHi: string;
+  nameEn: string;
+  officialFeeHi: string;
+  officialFeeEn: string;
+  docsHi: string[];
+  docsEn: string[];
+  importantTipHi: string;
+  importantTipEn: string;
+}
+
+export const MP_CITIZEN_DOCUMENTS: ServiceDocGuide[] = [
+  {
+    id: 'samagra-ekyc',
+    nameHi: 'समग्र ई-केवाईसी (Samagra e-KYC)',
+    nameEn: 'Samagra e-KYC & Biometric',
+    officialFeeHi: 'निःशुल्क (Free) / अधिकतम ₹50',
+    officialFeeEn: 'Free of Cost / Max ₹50',
+    docsHi: [
+      'मूल आधार कार्ड (Aadhaar Card)',
+      '9 अंकों की सदस्य समग्र आईडी (Member Samagra ID)',
+      'आधार से लिंक मोबाइल नंबर (OTP सत्यापन के लिए) अथवा बायोमेट्रिक फिंगरप्रिंट',
+    ],
+    docsEn: [
+      'Original Aadhaar Card',
+      '9-Digit Member Samagra ID',
+      'Aadhaar-Linked Mobile for OTP or Biometric verification at Kiosk',
+    ],
+    importantTipHi: 'ध्यान दें: समग्र में नाम, जन्मतिथि और पिता का नाम आधार कार्ड के अनुसार ही अपडेट होगा।',
+    importantTipEn: 'Note: Name, DOB, and details will be updated exactly according to your Aadhaar card.',
+  },
+  {
+    id: 'khasra-khatauni',
+    nameHi: 'एमपी भूलेख / खसरा-खतौनी नकल',
+    nameEn: 'MP Bhulekh / Khasra Khatauni',
+    officialFeeHi: '₹30 प्रति पृष्ठ (सरकारी दर)',
+    officialFeeEn: '₹30 per page (Govt Rate)',
+    docsHi: [
+      'खसरा नंबर या खाता संख्या (Khasra or Khata Number)',
+      'जमीन मालिक का नाम, ग्राम (Village) एवं तहसील का नाम',
+      'आवेदक का पहचान पत्र (आधार कार्ड)',
+    ],
+    docsEn: [
+      'Land Survey / Khasra or Account Number',
+      'Landowner Name, Village and Tehsil details',
+      'Applicant ID proof (Aadhaar Card)',
+    ],
+    importantTipHi: 'डिजिटल हस्ताक्षर युक्त खसरा नकल ही बैंक लोन व रजिस्ट्री में मान्य होती है।',
+    importantTipEn: 'Digitally signed copy is mandatory for bank loans and registry works.',
+  },
+  {
+    id: 'ayushman-card',
+    nameHi: 'आयुष्मान भारत गोल्डन कार्ड (₹5 लाख इलाज)',
+    nameEn: 'Ayushman Bharat Golden Card',
+    officialFeeHi: 'निःशुल्क (Free)',
+    officialFeeEn: 'Free of Cost (Govt Sponsored)',
+    docsHi: [
+      'आधार कार्ड (Aadhaar Card)',
+      'राशन कार्ड / समग्र पात्रता पर्ची (Ration Card or Eligibility Slip)',
+      'सक्रिय मोबाइल नंबर (OTP के लिए)',
+    ],
+    docsEn: [
+      'Aadhaar Card of all family members',
+      'Ration Card / Samagra Eligibility Slip',
+      'Active Mobile number for OTP',
+    ],
+    importantTipHi: 'परिवार के प्रत्येक सदस्य का अलग आयुष्मान कार्ड बनेगा।',
+    importantTipEn: 'Every eligible member in the family gets an individual Ayushman card.',
+  },
+  {
+    id: 'caste-income',
+    nameHi: 'जाति व आय प्रमाण पत्र (Caste & Income)',
+    nameEn: 'Caste & Income Certificate',
+    officialFeeHi: '₹30 - ₹50 (पोर्टल शुल्क)',
+    officialFeeEn: '₹30 - ₹50 (Portal Charge)',
+    docsHi: [
+      'परिवार का 1950 या 1984 का मूल निवासी / जाति संबंधी रिकॉर्ड (जाति प्रमाण हेतु)',
+      'स्वप्रमाणित आय घोषणा पत्र (Self-Declaration Form)',
+      'समग्र आईडी एवं आधार कार्ड',
+      '1 रंगीन पासपोर्ट साइज़ फोटो',
+    ],
+    docsEn: [
+      'Family heritage land/caste record of 1950/1984 (for Caste Certificate)',
+      'Self-Declaration Income Affidavit form',
+      'Samagra ID and Aadhaar Card',
+      '1 Passport size color photograph',
+    ],
+    importantTipHi: 'लोक सेवा गारंटी अधिनियम के तहत निर्धारित 15 दिनों में प्रमाण पत्र जारी होता है।',
+    importantTipEn: 'Issued within 15 working days under MP Public Service Guarantee Act.',
+  },
+  {
+    id: 'vyapam-forms',
+    nameHi: 'कर्मचारी चयन मंडल (MPESB / व्यापम) फॉर्म',
+    nameEn: 'MPESB / Vyapam Exam Form',
+    officialFeeHi: '₹60 पोर्टल शुल्क + परीक्षा फीस',
+    officialFeeEn: '₹60 Portal Fee + Govt Exam Fee',
+    docsHi: [
+      'व्यापम प्रोफाइल रजिस्ट्रेशन (Vyapam Profile ID)',
+      '10वीं की अंकसूची (DOB सत्यापन के लिए)',
+      'सक्रिय बायोमेट्रिक व आधार कार्ड',
+      '3 महीने के अंदर खिंचवाई गई नवीनतम फोटो (जिस पर नाम व फोटो खिंचवाने की तारीख लिखी हो)',
+      'हस्ताक्षर एवं हस्तलिखित घोषणा पत्र (Handwritten text)',
+    ],
+    docsEn: [
+      'Vyapam Candidate Profile Registration ID',
+      '10th Class Marksheet for DOB verification',
+      'Active biometric Aadhaar card',
+      'Recent photo with printed Name and Date of photo',
+      'Signature and handwritten declaration snippet',
+    ],
+    importantTipHi: 'फॉर्म भरने से पहले अपनी प्रोफाइल में मोबाइल नंबर और ईमेल की जांच अवश्य करें।',
+    importantTipEn: 'Check that your mobile number & email in Vyapam profile are active before applying.',
+  },
+  {
+    id: 'electricity-bill',
+    nameHi: 'बिजली बिल भुगतान (Electricity Bill)',
+    nameEn: 'Electricity Bill Payment',
+    officialFeeHi: 'निःशुल्क (कोई अतिरिक्त शुल्क नहीं)',
+    officialFeeEn: 'Free (No Extra Operator Charge)',
+    docsHi: [
+      'बिजली बिल का 10 अंकों का आईवीआरएस / सर्विस नंबर (Consumer Number)',
+      'पुराना बिजली बिल या एसएमएस',
+    ],
+    docsEn: [
+      '10-digit IVRS / Consumer service number',
+      'Previous electricity bill copy or SMS',
+    ],
+    importantTipHi: 'कियोस्क ऑपरेटर से कंप्यूटरीकृत मुद्रित रसीद (Printed Slip) लेना न भूलें।',
+    importantTipEn: 'Always collect the official computerized printed receipt from the operator.',
+  },
+  {
+    id: 'pan-card',
+    nameHi: 'पैन कार्ड आवेदन (New PAN Card)',
+    nameEn: 'PAN Card Application',
+    officialFeeHi: '₹107 (सरकारी शुल्क)',
+    officialFeeEn: '₹107 (Official Govt Fee)',
+    docsHi: [
+      'आधार कार्ड (Aadhaar Card)',
+      '2 पासपोर्ट साइज फोटो (सफेद बैकग्राउंड)',
+      'हस्ताक्षर अथवा अंगूठे का निशान',
+    ],
+    docsEn: [
+      'Aadhaar Card with full DOB',
+      '2 Passport size photographs with white background',
+      'Signature or left thumb impression',
+    ],
+    importantTipHi: 'ई-पैन 3 दिनों में ईमेल पर और फिजिकल कार्ड 10-15 दिनों में डाक द्वारा घर पहुंचता है।',
+    importantTipEn: 'e-PAN arrives in email within 3 days; physical card is mailed to your address.',
+  },
+];
+
+export const UI_TEXT = {
+  hi: {
+    // App Header & Search
+    searchPlaceholder: 'एमपीऑनलाइन कियोस्क, सेवा या ऑपरेटर खोजें...',
+    searchVoiceListening: 'सुन रहे हैं... बोलिए (उदा: लालघाटी, समग्र ई-केवाईसी)',
+    voiceSearchTooltip: 'बोलकर खोजें (Voice Search)',
+    voiceSearchError: 'माइक की अनुमति नहीं मिली या आवाज़ स्पष्ट नहीं थी।',
+    voiceNotSupported: 'आपके ब्राउज़र में आवाज़ पहचानने की सुविधा नहीं है। कृपया क्रोम का उपयोग करें।',
+    micConnected: 'माइक्रोफ़ोन कनेक्टेड है 🟢 — अब बोलिए...',
+    micConnecting: 'माइक्रोफ़ोन से कनेक्ट हो रहे हैं...',
+    micPermissionBlocked: 'माइक्रोफ़ोन ब्लॉक है — कृपया ब्राउज़र में Mic Allow करें 🔒',
+    micNoSpeech: 'कोई आवाज़ नहीं सुनी गई — कृपया माइक के पास साफ़ बोलें।',
+    micNetworkIssue: 'स्पीच नेटवर्क सेवा बाधित है — नीचे दिए गए त्वरित विकल्पों पर टैप करें।',
+    micRetry: 'पुनः प्रयास करें',
+    quickVoicePicks: 'या तुरंत बोलकर खोजने वाले लोकप्रिय विकल्प:',
+    voiceModalTitle: 'बोलकर खोजें (Voice Search)',
+    listeningWavePrompt: 'आवाज़ रिकॉर्ड हो रही है...',
+    iframeMicNotice: 'AI Studio का प्रीव्यू सैंडबॉक्स्ड फ्रेम (Iframe) में चलता है। aistudio.google.com पर माइक ऑन होने के बावजूद ब्राउज़र सुरक्षा नीति आंतरिक फ्रेम को ब्लॉक करती है। बिना रुकावट माइक उपयोग के लिए ऊपर ⧉ (Open in new window) पर क्लिक करें या नीचे दिए विकल्पों में से चुनें।',
+    openInNewTab: 'अलग टैब में खोलें ↗',
+    directionsTooltip: 'रास्ता खोजें',
+    exitDirectionsTooltip: 'रास्ता बंद करें',
+    offlineManagerTooltip: 'ऑफलाइन मैप प्रबंधक',
+    switchDarkMode: 'डार्क मोड',
+    switchLightMode: 'लाइट मोड',
+    filterButton: 'फ़िल्टर',
+    clearSearch: 'खोज हटाएं',
+    docsChecklistButton: 'ज़रूरी दस्तावेज़ 📋',
+    docsChecklistModalTitle: 'कियोस्क जाने से पहले ज़रूरी दस्तावेज़ एवं सरकारी दर सूची',
+    docsSubtitle: 'दुकान जाने से पहले यह पर्चा देख लें ताकि आपका समय और फेरा न बचे',
+    officialFeeLabel: 'सरकारी पोर्टल दर / शुल्क:',
+    closeButton: 'बंद करें',
+    importantNotice: 'महत्वपूर्ण सुझाव:',
+
+    // Kiosk Details & Actions
+    directions: 'रास्ता देखें',
+    callOperator: 'ऑपरेटर को कॉल करें',
+    callKiosk: 'कॉल करें',
+    openNow: 'अभी खुला है',
+    closedNow: 'अभी बंद है',
+    whatsapp: 'व्हाट्सएप',
+    whatsappMsgPrefix: 'नमस्ते! मुझे एमपीऑनलाइन सेवाओं के बारे में जानकारी चाहिए आपके कियोस्क पर:',
+    shareLocationWhatsApp: 'व्हाट्सएप पर लोकेशन शेयर करें',
+    shareLocationWhatsAppSub: 'Google Maps लाइव नेविगेशन लिंक के साथ',
+    copiedShareLink: 'व्हाट्सएप लिंक कॉपी हो गया!',
+    googleMapsApp: 'गूगल मैप्स ऐप में खोलें',
+    authorizedCenter: 'मध्य प्रदेश शासन अधिकृत एमपीऑनलाइन कियोस्क',
+    servicesProvided: 'उपलब्ध नागरिक सेवाएं',
+    facilities: 'उपलब्ध सुविधाएं',
+    hasPrinter: 'प्रिंटर उपलब्ध',
+    hasBiometric: 'बायोमेट्रिक फिंगरप्रिंट मशीन',
+    hasPhotostat: 'फोटोकॉपी / ज़ेरॉक्स मशीन',
+    authorizedCSC: 'अधिकृत सीएससी (CSC) केंद्र',
+    operatingHours: 'कार्य समय:',
+    operatorName: 'संचालक:',
+    kioskCode: 'कियोस्क कोड:',
+    nearbyHeading: 'निकटतम एमपीऑनलाइन कियोस्क',
+    kiosksCount: 'अधिकृत केंद्र उपलब्ध हैं',
+    noKiosksFound: 'कोई कियोस्क नहीं मिला',
+    tryChangingFilter: 'कृपया दूसरा क्षेत्र चुनें या फ़िल्टर साफ़ करें।',
+    viewDocsForThisService: 'दस्तावेज़ देखें 📄',
+
+    // Directions
+    backToDetails: 'विवरण पर वापस जाएं',
+    yourCurrentLocation: 'आपका वर्तमान स्थान',
+    detectingLocation: 'स्थान खोज रहे हैं...',
+    locateMe: 'स्थान 📍',
+    fitBothOnMap: '🗺️ दोनों को मैप पर देखें',
+    centerKiosk: 'कियोस्क 🎯',
+    driveMode: 'कार / गाड़ी',
+    bikeMode: 'बाइक / दोपहिया',
+    walkMode: 'पैदल',
+    calculatingRoute: 'सबसे छोटा रास्ता खोज रहे हैं...',
+    turnByTurnNav: 'मोड़-दर-मोड़ रास्ता (Turn-by-Turn)',
+    selectLocationPrompt: 'रास्ता देखने के लिए ऊपर अपना स्थान चुनें या रिकेंटर बटन दबाएं।',
+
+    // Offline & Toast
+    offlineActiveToast: 'ऑफलाइन मोड सक्रिय — सहेजे गए स्थानीय मैप से रास्ता दिखाया जा रहा है',
+    offlineStatusBadge: 'ऑफलाइन सुरक्षित',
+
+    // Quick Filters
+    allServices: 'सभी सेवाएं',
+    openNowFilter: '🟢 अभी खुला है',
+    verifiedOnlyFilter: 'सत्यापित केंद्र',
+    cscOnlyFilter: 'सीएससी (CSC)',
+    nearMeFilter: 'मेरे 5 किमी के अंदर',
+    clearAllFilters: 'सभी फ़िल्टर साफ़ करें',
+
+    // Language
+    currentLangLabel: 'हिंदी',
+    switchLangTooltip: 'Switch to English',
+  },
+  en: {
+    // App Header & Search
+    searchPlaceholder: 'Search MPOnline kiosk, service, code...',
+    searchVoiceListening: 'Listening... speak now (e.g. MP Nagar, Samagra KYC)',
+    voiceSearchTooltip: 'Search by voice',
+    voiceSearchError: 'Microphone permission denied or no speech heard.',
+    voiceNotSupported: 'Voice search is not supported in this browser. Please use Chrome.',
+    micConnected: 'Microphone Connected 🟢 — Speak now...',
+    micConnecting: 'Connecting to microphone...',
+    micPermissionBlocked: 'Microphone permission blocked — Please Allow Mic in browser 🔒',
+    micNoSpeech: 'No speech detected — Please speak clearly into the mic.',
+    micNetworkIssue: 'Speech network service issue — Tap the quick options below.',
+    micRetry: 'Try Again',
+    quickVoicePicks: 'Or popular voice search presets:',
+    voiceModalTitle: 'Search by Voice',
+    listeningWavePrompt: 'Listening to your voice...',
+    iframeMicNotice: 'The preview runs inside an embedded sandbox iframe. Even though microphone is ON for aistudio.google.com, browser security blocks the iframe origin. To use live microphone, click ⧉ (Open in new window) at the top or pick from presets below.',
+    openInNewTab: 'Open in New Tab ↗',
+    directionsTooltip: 'Calculate Shortest Route',
+    exitDirectionsTooltip: 'Exit Directions',
+    offlineManagerTooltip: 'Offline Maps Manager',
+    switchDarkMode: 'Switch to Dark Mode',
+    switchLightMode: 'Switch to Light Mode',
+    filterButton: 'Filters',
+    clearSearch: 'Clear search',
+    docsChecklistButton: 'Document Checklist 📋',
+    docsChecklistModalTitle: 'Required Documents & Official Govt Rate Guide',
+    docsSubtitle: 'Check this list before visiting to avoid repeat trips to the kiosk',
+    officialFeeLabel: 'Official Portal Fee / Rate:',
+    closeButton: 'Close',
+    importantNotice: 'Important Tip:',
+
+    // Kiosk Details & Actions
+    directions: 'Directions',
+    callOperator: 'Call Operator',
+    callKiosk: 'Call Kiosk',
+    openNow: 'Open Now',
+    closedNow: 'Closed',
+    whatsapp: 'WhatsApp',
+    whatsappMsgPrefix: 'Namaste! Inquiring about citizen services at your MPOnline kiosk:',
+    shareLocationWhatsApp: 'Share Location on WhatsApp',
+    shareLocationWhatsAppSub: 'With Google Maps Live Navigation Link',
+    copiedShareLink: 'WhatsApp link copied!',
+    googleMapsApp: 'Open in Google Maps',
+    authorizedCenter: 'Authorized MPOnline Citizen Center',
+    servicesProvided: 'Citizen Services Provided',
+    facilities: 'Available Facilities',
+    hasPrinter: 'Printer Available',
+    hasBiometric: 'Biometric Fingerprint Scanner',
+    hasPhotostat: 'Photostat / Xerox Machine',
+    authorizedCSC: 'Authorized CSC Center',
+    operatingHours: 'Hours:',
+    operatorName: 'Operator:',
+    kioskCode: 'Kiosk Code:',
+    nearbyHeading: 'MPOnline Kiosks Nearby',
+    kiosksCount: 'authorized centers found',
+    noKiosksFound: 'No MPOnline Kiosks Match Filters',
+    tryChangingFilter: 'Try clearing filters or zooming out to see more centers.',
+    viewDocsForThisService: 'Required Docs 📄',
+
+    // Directions
+    backToDetails: 'Back to Details',
+    yourCurrentLocation: 'Your Current Location',
+    detectingLocation: 'Detecting live GPS...',
+    locateMe: 'Locate 📍',
+    fitBothOnMap: '🗺️ Fit Both on Map',
+    centerKiosk: 'Center 🎯',
+    driveMode: 'Drive (Car)',
+    bikeMode: 'Two-Wheeler',
+    walkMode: 'Walk',
+    calculatingRoute: 'Calculating shortest route...',
+    turnByTurnNav: 'Turn-by-Turn Navigation',
+    selectLocationPrompt: 'Select your location or tap "Recenter" to calculate route.',
+
+    // Offline & Toast
+    offlineActiveToast: 'Offline Mode Active — Map rendering with cached local tiles',
+    offlineStatusBadge: 'Offline Ready',
+
+    // Quick Filters
+    allServices: 'All Services',
+    openNowFilter: '🟢 Open Now',
+    verifiedOnlyFilter: 'Verified Centers',
+    cscOnlyFilter: 'CSC Authorized',
+    nearMeFilter: 'Within 5 km',
+    clearAllFilters: 'Clear All Filters',
+
+    // Language
+    currentLangLabel: 'English',
+    switchLangTooltip: 'हिंदी में बदलें (Change to Hindi)',
+  },
+};
+
+export const getT = (lang: Language) => UI_TEXT[lang];

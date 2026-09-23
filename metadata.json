@@ -1,0 +1,6 @@
+{
+  "name": "MPOnline Kiosk Navigator",
+  "description": "Interactive Google Maps-style Leaflet map to locate MPOnline kiosk centers, calculate shortest routes with turn-by-turn directions, cluster markers, and cache offline maps.",
+  "requestFramePermissions": ["geolocation", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
