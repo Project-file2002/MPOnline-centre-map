@@ -57,12 +57,19 @@ export interface UserLocation {
 
 export type MapTileStyle = 'streets' | 'osm' | 'hot' | 'topo' | 'satellite';
 
+export interface OfflineDownloadResult {
+  requested: number;
+  downloaded: number;
+  cached: number;
+  failed: number;
+}
+
 export interface OfflineCacheStats {
   cachedTileCount: number;
   cacheSizeMB: number;
   isDownloading: boolean;
   downloadProgress: number;
-  lastCachedArea?: string;
+  lastDownload?: OfflineDownloadResult;
 }
 
 export interface FilterOptions {

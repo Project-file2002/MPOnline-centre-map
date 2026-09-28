@@ -24,6 +24,7 @@ import {
   downloadAreaTiles,
   getCacheStats,
 } from './services/offlineCache';
+import { getMapTileSource } from './services/mapTiles';
 import { MapContainer } from './components/MapContainer';
 import { GoogleMapsSearchBar } from './components/GoogleMapsSearchBar';
 import { KioskSidebar } from './components/KioskSidebar';
@@ -396,45 +397,52 @@ export default function App() {
     }
   };
 
-  // 8. Offline Map Tile Pre-Caching Handler
   const handleDownloadCurrentArea = async () => {
     if (!mapInstance) return;
 
     const bounds = mapInstance.getBounds();
+    const tileSource = getMapTileSource(mapStyle);
     setOfflineStats((prev) => ({
       ...prev,
       isDownloading: true,
       downloadProgress: 0,
+      lastDownload: undefined,
     }));
 
     try {
-      await downloadAreaTiles(
+      const result = await downloadAreaTiles(
         {
           minLat: bounds.getSouth(),
           maxLat: bounds.getNorth(),
           minLng: bounds.getWest(),
           maxLng: bounds.getEast(),
         },
+        tileSource,
         12,
         15,
-        (done, total) => {
-          const progress = Math.min(100, Math.round((done / Math.max(1, total)) * 100));
+        (processed, total) => {
+          const progress = Math.min(100, Math.round((processed / Math.max(1, total)) * 100));
           setOfflineStats((prev) => ({ ...prev, downloadProgress: progress }));
         }
       );
-    } finally {
+
       await refreshCacheStats();
       setOfflineStats((prev) => ({
         ...prev,
         isDownloading: false,
         downloadProgress: 100,
+        lastDownload: result,
       }));
+    } catch {
+      await refreshCacheStats();
+      setOfflineStats((prev) => ({ ...prev, isDownloading: false }));
     }
   };
 
   const handleClearCache = async () => {
     await clearTileCache();
     await refreshCacheStats();
+    setOfflineStats((prev) => ({ ...prev, downloadProgress: 0, lastDownload: undefined }));
   };
 
   // Quick jump to MP cities

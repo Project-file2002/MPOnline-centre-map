@@ -4,6 +4,7 @@ import Supercluster from 'supercluster';
 import { Kiosk, MapTileStyle, RouteInfo, UserLocation, TransportMode, Language } from '../types';
 import { CachedTileLayer } from '../services/CachedTileLayer';
 import { formatDistance } from '../services/geoUtils';
+import { getMapTileSource } from '../services/mapTiles';
 
 interface MapContainerProps {
   kiosks: Array<Kiosk & { distanceKm: number | null }>;
@@ -100,45 +101,12 @@ export const MapContainer: React.FC<MapContainerProps> = ({
       map.removeLayer(tileLayerRef.current);
     }
 
-    // 100% Free & Keyless Tile Layers (Zero Watermarks, Fast Global CDN)
-    let urlTemplate = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}';
-    let subdomains = '';
-    let maxZoom = 19;
-
-    switch (mapStyle) {
-      case 'osm':
-        // Official OpenStreetMap standard tile server
-        urlTemplate = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
-        subdomains = 'abc';
-        break;
-      case 'hot':
-        // Humanitarian OpenStreetMap Team (HOT) - Free community cartography
-        urlTemplate = 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
-        subdomains = 'abc';
-        break;
-      case 'topo':
-        // OpenTopoMap - Free topographic elevation and terrain
-        urlTemplate = 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
-        subdomains = 'abc';
-        maxZoom = 17;
-        break;
-      case 'satellite':
-        // Esri High-Resolution World Satellite Imagery
-        urlTemplate = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}';
-        subdomains = '';
-        break;
-      case 'streets':
-      default:
-        // Esri World Street Map: closest free visual equivalent to Google Maps (streets, highways, parks, clean labels, zero watermark)
-        urlTemplate = 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}';
-        subdomains = '';
-        break;
-    }
-
-    const newTileLayer = new CachedTileLayer(urlTemplate, {
-      subdomains,
-      maxZoom,
+    const tileSource = getMapTileSource(mapStyle);
+    const newTileLayer = new CachedTileLayer(tileSource.urlTemplate, {
+      subdomains: tileSource.subdomains ?? '',
+      maxZoom: tileSource.maxZoom,
       simulatedOffline: isSimulatedOffline,
+      cacheKey: tileSource.cacheKey,
     });
 
     newTileLayer.addTo(map);

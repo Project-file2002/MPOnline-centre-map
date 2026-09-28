@@ -14,6 +14,7 @@ import {
   Building2,
   HardDriveDownload,
   Search,
+  AlertTriangle,
 } from 'lucide-react';
 import { MapTileStyle, OfflineCacheStats, Language, UITheme } from '../types';
 import { MP_CITIES } from '../data/kiosks';
@@ -28,11 +29,19 @@ const MP_CITY_TRANSLATIONS: Record<string, { hi: string; en: string; district: s
   Sagar: { hi: 'सागर', en: 'Sagar', district: 'बुंदेलखंड संभाग' },
   Rewa: { hi: 'रीवा', en: 'Rewa', district: 'विंध्य संभाग' },
   Satna: { hi: 'सतना', en: 'Satna', district: 'सतना जिला' },
-  Dewas: { hi: 'देवास', en: 'Dewas', district: 'मालवा क्षेत्र' },
+  Dewas: { hi: 'देवास', en: 'Dewas', district: 'देवास जिला' },
   Ratlam: { hi: 'रतलाम', en: 'Ratlam', district: 'रतलाम जिला' },
   Narmadapuram: { hi: 'नर्मदापुरम', en: 'Narmadapuram', district: 'नर्मदापुरम संभाग' },
   Sehore: { hi: 'सीहोर', en: 'Sehore', district: 'सीहोर जिला' },
   Vidisha: { hi: 'विदिशा', en: 'Vidisha', district: 'विदिशा जिला' },
+};
+
+const MAP_STYLE_LABELS: Record<MapTileStyle, string> = {
+  streets: 'Esri Streets',
+  osm: 'OpenStreetMap',
+  hot: 'Humanitarian OSM',
+  topo: 'OpenTopoMap',
+  satellite: 'Esri Satellite',
 };
 
 interface MapControlsProps {
@@ -89,6 +98,8 @@ export const MapControls: React.FC<MapControlsProps> = ({
       (trans && (trans.hi.includes(query) || trans.district.toLowerCase().includes(query)))
     );
   });
+  const lastDownload = offlineStats.lastDownload;
+  const availableTileCount = lastDownload ? lastDownload.downloaded + lastDownload.cached : 0;
 
   return (
     <>
@@ -419,20 +430,45 @@ export const MapControls: React.FC<MapControlsProps> = ({
                 </div>
               </div>
 
-              {/* Download Current Area */}
+              {lastDownload && (
+                <div
+                  className={`p-3 rounded-xl border text-[11px] ${
+                    lastDownload.failed > 0
+                      ? 'border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-200'
+                      : 'border-emerald-200 bg-emerald-50 text-emerald-900 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-200'
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5 font-bold">
+                    {lastDownload.failed > 0 ? (
+                      <AlertTriangle className="w-4 h-4 shrink-0" />
+                    ) : (
+                      <CheckCircle className="w-4 h-4 shrink-0" />
+                    )}
+                    {lastDownload.failed > 0
+                      ? `Partial cache: ${availableTileCount} of ${lastDownload.requested} tiles are available.`
+                      : `${lastDownload.requested} map tiles are ready offline.`}
+                  </div>
+                  {lastDownload.failed > 0 && (
+                    <p className="mt-1 pl-5 text-amber-800/80 dark:text-amber-200/80">
+                      {lastDownload.failed} tile{lastDownload.failed === 1 ? '' : 's'} could not be saved. Try again with a stable connection.
+                    </p>
+                  )}
+                </div>
+              )}
+
               <div className="p-3.5 rounded-xl border border-blue-100 dark:border-blue-900/40 bg-blue-50/50 dark:bg-blue-950/20">
                 <h4 className="font-bold text-blue-900 dark:text-blue-200 flex items-center gap-1.5 mb-1">
                   <Download className="w-4 h-4 text-blue-600" />
                   Pre-Cache Current Visible Area
                 </h4>
                 <p className="text-slate-600 dark:text-slate-300 text-[11px] mb-3">
-                  Pre-download road and street tiles for the current map viewport (zoom levels 12-15) so you can navigate MPOnline kiosks even without internet.
+                  Save {MAP_STYLE_LABELS[mapStyle]} tiles for the current viewport at zoom levels 12-15.
                 </p>
 
                 {offlineStats.isDownloading ? (
                   <div className="space-y-1.5">
                     <div className="flex justify-between text-[11px] font-semibold text-blue-700 dark:text-blue-300">
-                      <span>Downloading tiles...</span>
+                      <span>Preparing tiles...</span>
                       <span>{offlineStats.downloadProgress}%</span>
                     </div>
                     <div className="w-full bg-blue-200 dark:bg-blue-900/60 h-2 rounded-full overflow-hidden">

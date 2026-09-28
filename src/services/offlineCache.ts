@@ -1,10 +1,12 @@
-// IndexedDB storage for offline Leaflet map tiles
+import type { OfflineDownloadResult } from '../types';
+import { getTileCacheKey, getTileUrl, type MapTileSource } from './mapTiles';
+
 const DB_NAME = 'mponline_map_offline_cache';
 const DB_VERSION = 1;
 const STORE_NAME = 'map_tiles';
 
 interface TileRecord {
-  key: string; // "z/x/y" or full tile URL
+  key: string;
   blob: Blob;
   timestamp: number;
 }
@@ -63,24 +65,22 @@ export async function getCachedTile(key: string): Promise<Blob | null> {
 }
 
 export async function saveTileToCache(key: string, blob: Blob): Promise<void> {
-  try {
-    const db = await getDB();
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction([STORE_NAME], 'readwrite');
-      const store = transaction.objectStore(STORE_NAME);
-      const record: TileRecord = {
-        key,
-        blob,
-        timestamp: Date.now(),
-      };
-      const request = store.put(record);
+  const db = await getDB();
 
-      request.onsuccess = () => resolve();
-      request.onerror = () => reject(request.error);
-    });
-  } catch {
-    // Ignore storage quota errors silently
-  }
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction([STORE_NAME], 'readwrite');
+    const store = transaction.objectStore(STORE_NAME);
+    const record: TileRecord = {
+      key,
+      blob,
+      timestamp: Date.now(),
+    };
+
+    transaction.oncomplete = () => resolve();
+    transaction.onerror = () => reject(transaction.error);
+    transaction.onabort = () => reject(transaction.error);
+    store.put(record);
+  });
 }
 
 export async function getCacheStats(): Promise<{ count: number; sizeMB: number }> {
@@ -134,60 +134,62 @@ function latLngToTile(lat: number, lng: number, zoom: number): { x: number; y: n
   return { x, y };
 }
 
-// Pre-download map tiles for a specified geographic area and zoom range
 export async function downloadAreaTiles(
   bounds: { minLat: number; maxLat: number; minLng: number; maxLng: number },
+  source: MapTileSource,
   minZoom = 12,
   maxZoom = 15,
-  onProgress?: (downloaded: number, total: number) => void
-): Promise<number> {
+  onProgress?: (processed: number, total: number) => void
+): Promise<OfflineDownloadResult> {
   const tileTasks: Array<{ z: number; x: number; y: number }> = [];
+  const cappedMaxZoom = Math.min(maxZoom, source.maxZoom);
 
-  for (let z = minZoom; z <= maxZoom; z++) {
+  tileGeneration: for (let z = minZoom; z <= cappedMaxZoom; z++) {
     const nw = latLngToTile(bounds.maxLat, bounds.minLng, z);
     const se = latLngToTile(bounds.minLat, bounds.maxLng, z);
-
     const minX = Math.min(nw.x, se.x);
     const maxX = Math.max(nw.x, se.x);
     const minY = Math.min(nw.y, se.y);
     const maxY = Math.max(nw.y, se.y);
 
-    // Bound the maximum tiles per download to prevent overwhelming
     for (let x = minX; x <= maxX; x++) {
       for (let y = minY; y <= maxY; y++) {
+        if (tileTasks.length === 300) break tileGeneration;
         tileTasks.push({ z, x, y });
-        if (tileTasks.length > 300) break; // Safe threshold for single area download
       }
-      if (tileTasks.length > 300) break;
     }
   }
 
-  const total = tileTasks.length;
-  let downloaded = 0;
+  const result: OfflineDownloadResult = {
+    requested: tileTasks.length,
+    downloaded: 0,
+    cached: 0,
+    failed: 0,
+  };
 
   for (const { z, x, y } of tileTasks) {
-    const tileKey = `${z}/${x}/${y}`;
-    const tileUrl = `https://tile.openstreetmap.org/${z}/${x}/${y}.png`;
+    const tileKey = getTileCacheKey(source.cacheKey, z, x, y);
 
     try {
-      // Check if already in cache
-      const cached = await getCachedTile(tileKey);
-      if (!cached) {
-        const response = await fetch(tileUrl);
-        if (response.ok) {
-          const blob = await response.blob();
-          await saveTileToCache(tileKey, blob);
+      const cachedTile = await getCachedTile(tileKey);
+      if (cachedTile) {
+        result.cached += 1;
+      } else {
+        const response = await fetch(getTileUrl(source, z, x, y));
+        if (!response.ok) {
+          result.failed += 1;
+        } else {
+          await saveTileToCache(tileKey, await response.blob());
+          result.downloaded += 1;
         }
       }
     } catch {
-      // Ignore single tile fetch failures
+      result.failed += 1;
     }
 
-    downloaded++;
-    if (onProgress) {
-      onProgress(downloaded, total);
-    }
+    const processed = result.downloaded + result.cached + result.failed;
+    onProgress?.(processed, result.requested);
   }
 
-  return downloaded;
+  return result;
 }
