@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Class-based dark mode: dark: variants must follow the app's .dark toggle,
+   not the OS prefers-color-scheme, otherwise OS-dark + app-light mixes
+   dark utilities with light theme-panel backgrounds. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   * {
     -webkit-tap-highlight-color: transparent;
