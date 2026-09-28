@@ -32,10 +32,6 @@
   border: none !important;
 }
 
-.dark .leaflet-container {
-  background-color: #0b0f19;
-}
-
 /* Custom Marker Cluster Styling */
 .mponline-cluster-icon {
   display: flex;
@@ -497,11 +493,6 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
-}
-
-/* Seamless Dark Mode Tile Filter (100% Free & Watermark-Free) */
-.dark-map-tiles .leaflet-tile-pane {
-  filter: brightness(0.7) invert(1) contrast(1.35) hue-rotate(190deg) saturate(0.35);
 }
 
 /* ==========================================================

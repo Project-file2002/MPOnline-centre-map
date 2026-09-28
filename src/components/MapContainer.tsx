@@ -593,7 +593,7 @@ export const MapContainer: React.FC<MapContainerProps> = ({
   }, [routeInfo, isDirectionsActive, userLocation, selectedKiosk, transportMode, isDarkMode]);
 
   return (
-    <div className={`relative w-full h-full ${isDarkMode && mapStyle !== 'satellite' ? 'dark-map-tiles' : ''}`}>
+    <div className="relative w-full h-full">
       <div
         ref={mapElementRef}
         id="leaflet-map-canvas"
