@@ -89,14 +89,11 @@ export default function App() {
   });
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('mponline_theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('mponline_theme', 'light');
-    }
-  }, [isDarkMode]);
+    // Cyber Midnight is OLED-only: its surfaces are always dark, so the dark
+    // utility palette must be active even when the user prefers light mode.
+    document.documentElement.classList.toggle('dark', isDarkMode || uiTheme === 'cyber');
+    localStorage.setItem('mponline_theme', isDarkMode ? 'dark' : 'light');
+  }, [isDarkMode, uiTheme]);
 
   // 2. Connectivity & Offline Cache State
   const [isOnline, setIsOnline] = useState<boolean>(

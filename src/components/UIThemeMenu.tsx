@@ -247,7 +247,7 @@ export const UIThemeMenu: React.FC<UIThemeMenuProps> = ({
                         {isSelected ? (
                           <Check className="w-4 h-4 text-emerald-700 dark:text-emerald-300 stroke-[3]" />
                         ) : theme.isRecommended ? (
-                          <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                          <Sparkles className="w-4 h-4 text-emerald-700 dark:text-emerald-300" />
                         ) : (
                           <div className="w-2.5 h-2.5 rounded-full bg-slate-500/50" />
                         )}
